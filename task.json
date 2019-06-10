@@ -1,0 +1,30 @@
+{
+    "id": "90ec4b9d-64ac-4e8a-970e-aa1a915fc4b3",
+    "name": "Add tag to work items",
+    "friendlyName": "Add tag to work items",
+    "description": "Add tag to all work items associated with current build",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "author": "Artem Sergeev",
+    "version": {
+        "Major": 0,
+        "Minor": 1,
+        "Patch": 0
+    },
+    "instanceNameFormat": "Echo $(samplestring)",
+    "inputs": [
+        {
+            "name": "tagToAdd",
+            "type": "string",
+            "label": "Tag to add to work items",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Specify a tag that will be added to work items"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js"
+        }
+    }
+}
