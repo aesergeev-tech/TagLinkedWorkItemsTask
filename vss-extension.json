@@ -1,33 +1,35 @@
 {
- "manifestVersion": 1,
- "id": "TFS-Add-Tag-To-WorkItems",
- "version": "1.0.3",
- "name": "Add Tag To WorkItems",
- "publisher": "ETR",
+  "manifestVersion": 1,
+  "id": "TFS-Add-Tag-To-WorkItems",
+  "version": "1.0.9",
+  "name": "Add Tag To WorkItems",
+  "publisher": "Artem Sergeev",
   "description": "Automatically add specified tag to all work items associated with build",
- "categories": [
-    "Build and release"
+  "categories": [
+    "Utility"
   ],
   "galleryFlags": [
-        "Public"
-    ],
+    "Public"
+  ],
   "targets": [
-         {
-             "id": "Microsoft.VisualStudio.Services"
-         }
-     ],
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
   "tags": [
     "Release",
     "Package",
     "Publish"
-  ],   
+  ],
   "branding": {
-        "color": "#f97923",
-        "theme": "dark"
+    "color": "#f97923",
+    "theme": "dark"
   },
   "files": [
     {
-      "path": "AddTagToWorkItems"
+      "path": "dist",
+      "addressable": true,
+      "packagePath": "dist"
     }
   ],
   "contributions": [
