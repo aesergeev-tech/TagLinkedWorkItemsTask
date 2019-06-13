@@ -23,14 +23,12 @@ async function run() {
 
 async function getWorkItemsFromBuild(collectionUrl: string, teamProject: string, buildId: string) {
     const maxItems = 500;
+    const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
     let uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems?api-version=2.0&top=${maxItems}`;
-    const pat = "lt75uizwyesd63n73qhchmqwkmdvpxvtjmkxjnzztz6zoauerpkq";
-    const encodedPat = "bHQ3NXVpend5ZXNkNjNuNzNxaGNobXF3a21kdnB4dnRqbWt4am56enR6NnpvYXVlcnBrcQ==";
-    const basic = "ZXRyXGEuc2VyZ2VldjpqY2xjOURZSw=="
     const options = {
         uri: uri,
         headers: {
-            "authorization": "Basic Omx0NzV1aXp3eWVzZDYzbjczcWhjaG1xd2ttZHZweHZ0am1reGpuenp0ejZ6b2F1ZXJwa3E=",
+            "authorization": `Bearer ${accessToken}`,
             "content-type": "application/json"
         },
         json: true
@@ -43,11 +41,12 @@ async function getWorkItemsFromBuild(collectionUrl: string, teamProject: string,
 
 async function addTagToWorkItem(workItem: any){
     const tagToAdd = <string>process.env['tagToAdd'];
+    const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
     const uri = workItem.url + "?fields=System.Tags&api-version=2.0";
     let options = {
         uri: uri,
         headers: {
-            "authorization": "Basic Omx0NzV1aXp3eWVzZDYzbjczcWhjaG1xd2ttZHZweHZ0am1reGpuenp0ejZ6b2F1ZXJwa3E=",
+            "authorization": `Bearer ${accessToken}`,
             "content-type": "application/json"
         },
         json: true
@@ -64,7 +63,7 @@ async function addTagToWorkItem(workItem: any){
     let opt = {
         uri: uri,
         headers: {
-            "authorization": "Basic Omx0NzV1aXp3eWVzZDYzbjczcWhjaG1xd2ttZHZweHZ0am1reGpuenp0ejZ6b2F1ZXJwa3E=",
+            "authorization": `Bearer ${accessToken}`,
             "content-type": "application/json-patch+json"
         },
         body: [{
