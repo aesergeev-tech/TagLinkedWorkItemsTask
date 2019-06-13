@@ -3,16 +3,13 @@ import * as request from "request-promise-native";
 
 async function run() {
     try {
-        
-        // const collectionUrl = <string>process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"];
-        // const teamProject = <string>process.env["SYSTEM_TEAMPROJECT"];
-        // const buildId = <string>process.env["BUILD_BUILDID"];
-        const collectionUrl = "https://tfs.eastbanctech.ru/tfs/Tfs_ETR_2010"
-        const teamProject = "ETR_S7_Workflows";
-        const buildId = "44421";
+
+        const collectionUrl = process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"];
+        const teamProject = process.env["SYSTEM_TEAMPROJECT"];
+        const buildId = process.env["BUILD_BUILDID"];
 
         const workItemsData = await getWorkItemsFromBuild(collectionUrl, teamProject, buildId);
-        workItemsData.forEach(async workItem => {
+        workItemsData.forEach(async (workItem: any) => {
             await addTagToWorkItem(workItem);
         });
     }
@@ -21,7 +18,7 @@ async function run() {
     }
 }
 
-async function getWorkItemsFromBuild(collectionUrl: string, teamProject: string, buildId: string) {
+async function getWorkItemsFromBuild(collectionUrl: any, teamProject: any, buildId: any) {
     const maxItems = 500;
     const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
     let uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems?api-version=2.0&top=${maxItems}`;
@@ -39,8 +36,8 @@ async function getWorkItemsFromBuild(collectionUrl: string, teamProject: string,
 
 }
 
-async function addTagToWorkItem(workItem: any){
-    const tagToAdd = <string>process.env['tagToAdd'];
+async function addTagToWorkItem(workItem: any) {
+    const tagFromInput = tl.getInput('tagToAdd');
     const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
     const uri = workItem.url + "?fields=System.Tags&api-version=2.0";
     let options = {
@@ -54,10 +51,10 @@ async function addTagToWorkItem(workItem: any){
     const result = await request.get(options);
     const currentTags = result.fields['System.Tags'];
     let newTags = '';
-    if(currentTags !== ''){
-        newTags = currentTags + ";" + tagToAdd;
-    }else{
-        newTags = tagToAdd;
+    if (currentTags !== undefined) {
+        newTags = currentTags + ";" + tagFromInput;
+    } else {
+        newTags = tagFromInput;
     }
     console.log(newTags);
     let opt = {
