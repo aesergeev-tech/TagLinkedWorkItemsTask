@@ -4,8 +4,7 @@
   "description": "Adds specified tag to all work items associated with particular build ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build_package": "tfx extension create --manifest-globs ./vss-extension.json --rev-version"
+    "build_package": "tsc && tfx extension create --manifest-globs ./vss-extension.json --rev-version"
   },
   "repository": {
     "type": "git",
