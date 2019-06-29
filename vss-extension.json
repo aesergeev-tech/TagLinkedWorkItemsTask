@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "TFS-Add-Tag-To-WorkItems",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "name": "Add Tag To WorkItems",
   "publisher": "ArtemSergeev",
   "description": "Automatically add specified tag to all work items associated with build",
