@@ -13,27 +13,28 @@
     },
     "inputs": [
         {
+            "name": "pipelineType",
+            "type": "pickList",
+            "label": "Specify type of pipeline",
+            "required": true,
+            "options":{
+                "Build": "Build", 
+                "Release": "Release"
+            }
+        },
+        {
             "name": "tagToAdd",
             "type": "string",
             "label": "Tag to add to work items",
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "Specify a tag that will be added to work items"
-        },
-        {
-            "name": "pipelineType",
-            "type": "pickList",
-            "label": "Specify type of pipeline (build or release)",
-            "defaultValue": "Build",
-            "options":{
-                "Build": "Build", 
-                "Release": "Release"
-            }
         }
+        
     ],
     "execution": {
         "Node": {
-            "target": "index.js"
+            "target": "dist/index.js"
         }
     }
 }
