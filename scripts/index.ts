@@ -1,14 +1,16 @@
 import tl = require('azure-pipelines-task-lib/task');
 import * as request from "request-promise-native";
 
+const collectionUrl = process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"];
+const teamProject = process.env["SYSTEM_TEAMPROJECT"];
+const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
+
 async function run() {
     try {
-
-        const collectionUrl = process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"];
-        const teamProject = process.env["SYSTEM_TEAMPROJECT"];
-        const buildId = process.env["BUILD_BUILDID"];
-
-        const workItemsData = await getWorkItemsFromBuild(collectionUrl, teamProject, buildId);
+        const pipelineType = tl.getInput('pipelineType');
+        const workItemsData = pipelineType === "Build" ? 
+             await getWorkItemsFromBuild() :
+             await getWorkItemsFromRelease();
         workItemsData.forEach(async (workItem: any) => {
             await addTagToWorkItem(workItem);
         });
@@ -18,19 +20,19 @@ async function run() {
     }
 }
 
-async function getWorkItemsFromBuild(collectionUrl: any, teamProject: any, buildId: any) {
-    const maxItems = 500;
-    const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
-    let uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems?api-version=2.0&top=${maxItems}`;
-    const options = {
-        uri: uri,
-        headers: {
-            "authorization": `Bearer ${accessToken}`,
-            "content-type": "application/json"
-        },
-        json: true
-    };
+async function getWorkItemsFromBuild() {
+    const buildId = process.env["BUILD_BUILDID"];
+    const uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems`;
+    const options = createGetRequestOptions(uri);
+    const result = await request.get(options);
+    return result.value;
 
+}
+
+async function getWorkItemsFromRelease() {
+    const releaseId = process.env["RELEASE_RELEASEID"];
+    const uri = `${collectionUrl}/${teamProject}/_apis/release/releases/${releaseId}/workitems`;
+    const options = createGetRequestOptions(uri);
     const result = await request.get(options);
     return result.value;
 
@@ -38,8 +40,22 @@ async function getWorkItemsFromBuild(collectionUrl: any, teamProject: any, build
 
 async function addTagToWorkItem(workItem: any) {
     const tagFromInput = tl.getInput('tagToAdd');
-    const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
     const uri = workItem.url + "?fields=System.Tags&api-version=2.0";
+    const getOptions = createGetRequestOptions(uri)
+    const result = await request.get(getOptions);
+    const currentTags = result.fields['System.Tags'];
+    let newTags = '';
+    if (currentTags !== undefined) {
+        newTags = currentTags + ";" + tagFromInput;
+    } else {
+        newTags = tagFromInput;
+    }
+    const patchOptions = getPatchRequestOptions(uri, newTags);
+    await request.patch(patchOptions)
+
+}
+
+function createGetRequestOptions(uri: string): any{
     let options = {
         uri: uri,
         headers: {
@@ -48,16 +64,11 @@ async function addTagToWorkItem(workItem: any) {
         },
         json: true
     };
-    const result = await request.get(options);
-    const currentTags = result.fields['System.Tags'];
-    let newTags = '';
-    if (currentTags !== undefined) {
-        newTags = currentTags + ";" + tagFromInput;
-    } else {
-        newTags = tagFromInput;
-    }
-    console.log(newTags);
-    let opt = {
+    return options;
+}
+
+function getPatchRequestOptions(uri: string, newTags: string): any{
+    const options = {
         uri: uri,
         headers: {
             "authorization": `Bearer ${accessToken}`,
@@ -70,8 +81,7 @@ async function addTagToWorkItem(workItem: any) {
         }],
         json: true
     };
-    await request.patch(opt)
-
+    return options
 }
 
 run();
