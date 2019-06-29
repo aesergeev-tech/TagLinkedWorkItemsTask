@@ -1,4 +1,4 @@
-import tl = require('azure-pipelines-task-lib/task');
+import * as tl from 'azure-pipelines-task-lib/task';
 import * as request from "request-promise-native";
 
 const collectionUrl = process.env["SYSTEM_TEAMFOUNDATIONCOLLECTIONURI"];
@@ -8,9 +8,9 @@ const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).par
 async function run() {
     try {
         const pipelineType = tl.getInput('pipelineType');
-        const workItemsData = pipelineType === "Build" ? 
-             await getWorkItemsFromBuild() :
-             await getWorkItemsFromRelease();
+        const workItemsData = pipelineType === "Build" ?
+            await getWorkItemsFromBuild() :
+            await getWorkItemsFromRelease();
         workItemsData.forEach(async (workItem: any) => {
             await addTagToWorkItem(workItem);
         });
@@ -55,7 +55,7 @@ async function addTagToWorkItem(workItem: any) {
 
 }
 
-function createGetRequestOptions(uri: string): any{
+function createGetRequestOptions(uri: string): any {
     let options = {
         uri: uri,
         headers: {
@@ -67,7 +67,7 @@ function createGetRequestOptions(uri: string): any{
     return options;
 }
 
-function getPatchRequestOptions(uri: string, newTags: string): any{
+function getPatchRequestOptions(uri: string, newTags: string): any {
     const options = {
         uri: uri,
         headers: {

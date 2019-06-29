@@ -3,7 +3,7 @@
   "id": "TFS-Add-Tag-To-WorkItems",
   "version": "1.0.10",
   "name": "Add Tag To WorkItems",
-  "publisher": "Artem Sergeev",
+  "publisher": "Artem-Sergeev",
   "description": "Automatically add specified tag to all work items associated with build",
   "categories": [
     "Utility"
@@ -27,9 +27,7 @@
   },
   "files": [
     {
-      "path": "dist",
-      "addressable": true,
-      "packagePath": "dist"
+      "path": "AddTagToWorkItems"
     }
   ],
   "contributions": [
