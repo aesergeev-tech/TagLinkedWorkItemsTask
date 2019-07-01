@@ -1,12 +1,12 @@
 {
   "manifestVersion": 1,
   "id": "work-items-tagging-task",
-  "version": "1.0.31",
+  "version": "1.0.33",
   "name": "Tag Linked Work Items",
   "publisher": "ArtemSergeev",
   "description": "Automatically add specified tag to all work items associated with build or release",
   "categories": [
-    "Build or Release"
+    "Build and release"
   ],
   "links":{
     "repository": {
@@ -29,8 +29,14 @@
   ],
   "tags": [
     "Release",
-    "Build"
+    "Build",
+    "Work item tagging"
   ],
+  "content": {
+    "details": {
+      "path": "extension.md"
+    }
+  },
   "branding": {
     "color": "#f97923",
     "theme": "dark"

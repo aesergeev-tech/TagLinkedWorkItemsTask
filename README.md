@@ -1,4 +1,4 @@
-# AddTagToBuildRelatedTasks
+# Tag Work Items Linked With Build or Release
 
 ## Overview
 This repo contains sources for the custom task for Azure DevOps Server (Team Foundation Server) build or release pipelines. 
