@@ -1,8 +1,8 @@
 {
     "id": "5d203600-ac29-495a-931f-04b26bb91a4f",
-    "name": "Add tag to work items",
-    "friendlyName": "Add tag to work items",
-    "description": "Add tag to all work items associated with current build",
+    "name": "Tag Linked Work Items",
+    "friendlyName": "Tag Linked Work Items",
+    "description": "Automatically add specified tag to all work items associated with build or release",
     "helpMarkDown": "",
     "category": "Utility",
     "author": "Artem Sergeev",
@@ -16,6 +16,7 @@
             "name": "pipelineType",
             "type": "pickList",
             "label": "Specify type of pipeline",
+            "helpMarkDown": "Specify whether task is used for build or release",
             "required": true,
             "options":{
                 "Build": "Build", 

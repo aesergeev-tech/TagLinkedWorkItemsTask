@@ -1,16 +1,20 @@
 {
   "manifestVersion": 1,
   "id": "work-items-tagging-task",
-  "version": "1.0.25",
-  "name": "Tag Associated Work Items",
+  "version": "1.0.30",
+  "name": "Tag Linked Work Items",
   "publisher": "ArtemSergeev",
   "description": "Automatically add specified tag to all work items associated with build or release",
   "categories": [
-    "Utility"
+    "Build or Release"
   ],
   "links":{
-    "repository": "https://github.com/asergeev95/AddTagToBuildRelatedTasks",
-    "issues": "https://github.com/asergeev95/AddTagToBuildRelatedTasks/issues"
+    "repository": {
+      "uri" :"https://github.com/asergeev95/AddTagToBuildRelatedTasks"
+    },
+    "issues": {
+      "uri": "https://github.com/asergeev95/AddTagToBuildRelatedTasks/issues"
+    }
   },
   "icons": {
     "default": "images/logo.png"
@@ -21,9 +25,6 @@
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
-    },
-    {
-      "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
   "tags": [
@@ -36,7 +37,7 @@
   },
   "files": [
     {
-      "path": "AddTagToWorkItems"
+      "path": "TagLinkedWorkItems"
     }
   ],
   "contributions": [
@@ -47,7 +48,7 @@
         "ms.vss-distributed-task.tasks"
       ],
       "properties": {
-        "name": "AddTagToWorkItems"
+        "name": "TagLinkedWorkItems"
       }
     }
   ]
