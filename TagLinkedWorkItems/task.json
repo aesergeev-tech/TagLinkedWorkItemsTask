@@ -18,6 +18,7 @@
             "label": "Specify type of pipeline",
             "helpMarkDown": "Specify whether task is used for build or release",
             "required": true,
+            "defaultValue": "Build",
             "options":{
                 "Build": "Build", 
                 "Release": "Release"

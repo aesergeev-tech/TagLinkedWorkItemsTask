@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "work-items-tagging-task",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "name": "Tag Linked Work Items",
   "publisher": "ArtemSergeev",
   "description": "Automatically add specified tag to all work items associated with build or release",
@@ -37,12 +37,25 @@
   },
   "files": [
     {
-      "path": "TagLinkedWorkItems"
+      "path": "TagLinkedWorkItems/dist",
+      "packagePath": "TagLinkedWorkItems/dist"
+    },
+    {
+      "path": "TagLinkedWorkItems/node_modules",
+      "packagePath": "TagLinkedWorkItems/node_modules"
+    },
+    {
+      "path": "TagLinkedWorkItems/icon.png",
+      "packagePath": "TagLinkedWorkItems/icon.png"
+    },
+    {
+      "path": "TagLinkedWorkItems/task.json",
+      "packagePath": "TagLinkedWorkItems/task.json"
     }
   ],
   "contributions": [
     {
-      "id": "Add-Tag-On-Build",
+      "id": "tag-linked-work-items",
       "type": "ms.vss-distributed-task.task",
       "targets": [
         "ms.vss-distributed-task.tasks"
