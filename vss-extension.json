@@ -1,7 +1,7 @@
 {
   "manifestVersion": 1,
   "id": "work-items-tagging-task",
-  "version": "1.0.33",
+  "version": "1.0.34",
   "name": "Tag Linked Work Items",
   "publisher": "ArtemSergeev",
   "description": "Automatically add specified tag to all work items associated with build or release",
