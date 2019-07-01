@@ -1,13 +1,17 @@
 {
   "manifestVersion": 1,
-  "id": "TFS-Add-Tag-To-WorkItems",
+  "id": "work-items-tagging-task",
   "version": "1.0.25",
-  "name": "Add Tag To WorkItems",
+  "name": "Tag Associated Work Items",
   "publisher": "ArtemSergeev",
-  "description": "Automatically add specified tag to all work items associated with build",
+  "description": "Automatically add specified tag to all work items associated with build or release",
   "categories": [
     "Utility"
   ],
+  "links":{
+    "repository": "https://github.com/asergeev95/AddTagToBuildRelatedTasks",
+    "issues": "https://github.com/asergeev95/AddTagToBuildRelatedTasks/issues"
+  },
   "icons": {
     "default": "images/logo.png"
   },
@@ -17,12 +21,14 @@
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
+    },
+    {
+      "id": "Microsoft.VisualStudio.Services.Cloud"
     }
   ],
   "tags": [
     "Release",
-    "Package",
-    "Publish"
+    "Build"
   ],
   "branding": {
     "color": "#f97923",
