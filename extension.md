@@ -14,3 +14,9 @@ Specify the type of pipeline of tag that will be added to linked work items
 ![Task setting](https://github.com/asergeev95/AddTagToBuildRelatedTasks/raw/master/screenshots/Screenshot_2.png)
 
 Enjoy it!
+
+## GitHub
+
+Any contribution or feedback is welcome!
+
+[Artem Sergeev/TagLinkedWorkItemsTask](https://github.com/asergeev95/TagLinkedWorkItemsTask)
