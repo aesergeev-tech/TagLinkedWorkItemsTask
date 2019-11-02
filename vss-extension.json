@@ -1,9 +1,9 @@
 {
   "manifestVersion": 1,
   "id": "work-items-tagging-task",
-  "version": "1.0.34",
+  "version": "1.0.39",
   "name": "Tag Linked Work Items",
-  "publisher": "ArtemSergeev",
+  "publisher": "true-sergeev",
   "description": "Automatically add specified tag to all work items associated with build or release",
   "categories": [
     "Build and release"
@@ -19,9 +19,7 @@
   "icons": {
     "default": "images/logo.png"
   },
-  "galleryFlags": [
-    "Public"
-  ],
+  "public":true,
   "targets": [
     {
       "id": "Microsoft.VisualStudio.Services"
