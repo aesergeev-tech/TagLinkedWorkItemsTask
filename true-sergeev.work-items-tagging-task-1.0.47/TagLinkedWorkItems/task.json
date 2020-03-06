@@ -8,7 +8,7 @@
     "author": "Artem Sergeev",
     "version": {
         "Major": 0,
-        "Minor": 2,
+        "Minor": 1,
         "Patch": 0
     },
     "inputs": [
@@ -38,7 +38,7 @@
             "label": "Area for filtering tasks for tagging",
             "defaultValue": "",
             "required": false,
-            "helpMarkDown": "Specify a value of an area field of work item to filter work items for tagging \n\n If doesn't specified tagging will be applied to all work items"
+            "helpMarkDown": "Specify a value of an area field of work item to filter work items for tagging"
         }
         
     ],
