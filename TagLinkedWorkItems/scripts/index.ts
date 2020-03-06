@@ -23,7 +23,6 @@ async function getWorkItemsFromBuild() {
     const uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems`;
     const options = createGetRequestOptions(uri);
     const result = await request.get(options);
-    tl.logIssue(tl.IssueType.Warning, `result: ${JSON.stringify(result)}`);
     return result.value;
 }
 
