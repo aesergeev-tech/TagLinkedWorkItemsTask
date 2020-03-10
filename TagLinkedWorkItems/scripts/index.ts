@@ -39,15 +39,18 @@ async function addTagToWorkItem(workItem: any) {
     const uri = workItem.url + `?api-version=${apiVersion}`;
     const getOptions = createGetRequestOptions(uri);
     const result = await request.get(getOptions);
-    const workItemAreaFromInput = tl.getInput('workItemArea');
-    const workItemArea = `${teamProject}\\${workItemAreaFromInput}`;
-    if (workItemAreaFromInput !== null) {
+    const specifiedChildWorkItemArea = tl.getInput('workItemArea');
+    if (specifiedChildWorkItemArea !== null) {
+        const areaForFiltering = `${teamProject}\\${specifiedChildWorkItemArea}`;
         const currentWorkItemArea = result.fields['System.AreaPath'];
-        if (currentWorkItemArea === workItemArea) {
+        if (currentWorkItemArea === areaForFiltering) {
             await updateWorkItemTags(result);
         }
     } else {
-        await updateWorkItemTags(result);
+        const currentWorkItemArea = result.fields['System.AreaPath'];
+        if(currentWorkItemArea === teamProject){
+            await updateWorkItemTags(result);
+        }
     }
 }
 

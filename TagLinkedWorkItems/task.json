@@ -8,7 +8,7 @@
     "author": "Artem Sergeev",
     "version": {
         "Major": 0,
-        "Minor": 5,
+        "Minor": 22,
         "Patch": 0
     },
     "inputs": [
@@ -35,13 +35,13 @@
         {
             "name": "workItemArea",
             "type": "pickList",
-            "label": "Area for filtering tasks for tagging",
+            "label": "Child area for filtering tasks for tagging",
             "defaultValue": "",
             "options": {
-                "any": "any"
+                "": ""
             },
             "required": false,
-            "helpMarkDown": "Specify a value of an area field of work item to filter work items for tagging \n\n If doesn't specified tagging will be applied to all work items"
+            "helpMarkDown": "Specify a value of a child area field of work item to filter work items for tagging \n\n Press refresh to load available areas \n\n If doesn't specified tagging will be applied to all work items with root area value (project name in general)"
         }
     ],
     "sourceDefinitions": [
