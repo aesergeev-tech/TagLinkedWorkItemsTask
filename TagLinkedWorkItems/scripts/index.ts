@@ -38,7 +38,8 @@ async function addTagToWorkItem(workItem: any) {
     const uri = workItem.url + '?api-version=5.1';
     const getOptions = createGetRequestOptions(uri);
     const result = await request.get(getOptions);
-    const workItemArea = tl.getInput('workItemArea');
+    const workItemAreaFromInput = tl.getInput('workItemArea');
+    const workItemArea = `${teamProject}\\${workItemAreaFromInput}`;
     if (workItemArea !== null) {
         const currentWorkItemArea = result.fields['System.AreaPath'];
         if (currentWorkItemArea === workItemArea) {
