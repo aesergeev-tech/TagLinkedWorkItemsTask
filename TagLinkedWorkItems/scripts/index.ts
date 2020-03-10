@@ -1,14 +1,14 @@
 import * as tl from 'azure-pipelines-task-lib/task';
 import * as request from 'request-promise-native';
 
-const collectionUrl = process.env['SYSTEM_TEAMFOUNDATIONCOLLECTIONURI'];
+const collectionUrl = process.env['SYSTEM_TEAMFOUNDATIONSERVERURI'];
 const teamProject = process.env['SYSTEM_TEAMPROJECT'];
 const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
+const apiVersion = "5.1";
 
 async function run() {
     try {
         const pipelineType = tl.getInput('pipelineType');
-
         const workItemsData = pipelineType === 'Build' ? await getWorkItemsFromBuild() : await getWorkItemsFromRelease();
         workItemsData.forEach(async (workItem: any) => {
             await addTagToWorkItem(workItem);
@@ -17,6 +17,7 @@ async function run() {
         tl.setResult(tl.TaskResult.Failed, err.message);
     }
 }
+
 
 async function getWorkItemsFromBuild() {
     const buildId = process.env['BUILD_BUILDID'];
@@ -35,12 +36,12 @@ async function getWorkItemsFromRelease() {
 }
 
 async function addTagToWorkItem(workItem: any) {
-    const uri = workItem.url + '?api-version=5.1';
+    const uri = workItem.url + `?api-version=${apiVersion}`;
     const getOptions = createGetRequestOptions(uri);
     const result = await request.get(getOptions);
     const workItemAreaFromInput = tl.getInput('workItemArea');
     const workItemArea = `${teamProject}\\${workItemAreaFromInput}`;
-    if (workItemArea !== null) {
+    if (workItemAreaFromInput !== null) {
         const currentWorkItemArea = result.fields['System.AreaPath'];
         if (currentWorkItemArea === workItemArea) {
             await updateWorkItemTags(result);
@@ -52,7 +53,7 @@ async function addTagToWorkItem(workItem: any) {
 
 async function updateWorkItemTags(workItem: any) {
     const tagFromInput = tl.getInput('tagToAdd');
-    const uri = workItem.url + '?api-version=5.1';
+    const uri = workItem.url + `?api-version=${apiVersion}`;
     const currentTags = workItem.fields['System.Tags'];
 
     let newTags = '';
