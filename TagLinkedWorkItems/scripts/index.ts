@@ -3,8 +3,10 @@ import * as request from 'request-promise-native';
 
 const collectionUrl = process.env['SYSTEM_TEAMFOUNDATIONSERVERURI'];
 const teamProject = process.env['SYSTEM_TEAMPROJECT'];
+console.log(`Team foundation server uri: ${collectionUrl}`);
+console.log(`Working on ${teamProject} project`);
 const accessToken = tl.getEndpointAuthorization('SystemVssConnection', true).parameters.AccessToken;
-const apiVersion = "5.1";
+const apiVersion = '5.1';
 
 async function run() {
     try {
@@ -18,20 +20,23 @@ async function run() {
     }
 }
 
-
 async function getWorkItemsFromBuild() {
     const buildId = process.env['BUILD_BUILDID'];
     const uri = `${collectionUrl}/${teamProject}/_apis/build/builds/${buildId}/workitems`;
+    console.log(`Collection work items associated with build from ${uri}`);
     const options = createGetRequestOptions(uri);
     const result = await request.get(options);
+    console.log(`Collected ${result.count} work items for tagging from build`);
     return result.value;
 }
 
 async function getWorkItemsFromRelease() {
     const releaseId = process.env['RELEASE_RELEASEID'];
     const uri = `${collectionUrl}/${teamProject}/_apis/release/releases/${releaseId}/workitems`;
+    console.log(`Collection work items associated with release from ${uri}`);
     const options = createGetRequestOptions(uri);
     const result = await request.get(options);
+    console.log(`Collected ${result.count} work items for tagging from release`);
     return result.value;
 }
 
@@ -44,11 +49,14 @@ async function addTagToWorkItem(workItem: any) {
         const areaForFiltering = `${teamProject}\\${specifiedChildWorkItemArea}`;
         const currentWorkItemArea = result.fields['System.AreaPath'];
         if (currentWorkItemArea === areaForFiltering) {
+            console.log(`Updating tags on #${workItem.id} with ${areaForFiltering} area`);
             await updateWorkItemTags(result);
         }
     } else {
         const currentWorkItemArea = result.fields['System.AreaPath'];
-        if(currentWorkItemArea === teamProject){
+        const rootArea = tl.getInput('rootArea');
+        if (currentWorkItemArea === rootArea) {
+            console.log(`Updating tags on #${workItem.id} with ${rootArea} area`);
             await updateWorkItemTags(result);
         }
     }
@@ -101,3 +109,5 @@ function getPatchRequestOptions(uri: string, newTags: string): any {
 }
 
 run();
+
+
