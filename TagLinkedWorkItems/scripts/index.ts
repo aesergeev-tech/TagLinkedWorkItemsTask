@@ -13,7 +13,7 @@ async function run() {
         const pipelineType = tl.getInput('pipelineType');
         const workItemsData = pipelineType === 'Build' ? await getWorkItemsFromBuild() : await getWorkItemsFromRelease();
         workItemsData.forEach(async (workItem: any) => {
-            await addTagToWorkItem(workItem);
+            await tagWorkItem(workItem);
         });
     } catch (err) {
         tl.setResult(tl.TaskResult.Failed, err.message);
@@ -40,29 +40,44 @@ async function getWorkItemsFromRelease() {
     return result.value;
 }
 
-async function addTagToWorkItem(workItem: any) {
+async function tagWorkItem(workItem: any) {
     const uri = workItem.url + `?api-version=${apiVersion}`;
     const getOptions = createGetRequestOptions(uri);
     const result = await request.get(getOptions);
-    const specifiedChildWorkItemArea = tl.getInput('workItemArea');
-    if (specifiedChildWorkItemArea !== null) {
-        const areaForFiltering = `${teamProject}\\${specifiedChildWorkItemArea}`;
-        const currentWorkItemArea = result.fields['System.AreaPath'];
-        if (currentWorkItemArea === areaForFiltering) {
-            console.log(`Updating tags on #${workItem.id} with ${areaForFiltering} area`);
-            await updateWorkItemTags(result);
+    const isAreaFilteringEnabled = tl.getInput('enableAreaFiltering') === 'true';
+
+    if (isAreaFilteringEnabled) {
+        const chieldWorkItemArea = tl.getInput('childArea');
+        if (chieldWorkItemArea === null) {
+            await updateWorkItemFromRootArea(result);
+        } else {
+            await updateWorkItemFromChildArea(result, chieldWorkItemArea);
         }
     } else {
-        const currentWorkItemArea = result.fields['System.AreaPath'];
-        const rootArea = tl.getInput('rootArea');
-        if (currentWorkItemArea === rootArea) {
-            console.log(`Updating tags on #${workItem.id} with ${rootArea} area`);
-            await updateWorkItemTags(result);
-        }
+        await updateWorkItem(result);
     }
 }
 
-async function updateWorkItemTags(workItem: any) {
+async function updateWorkItemFromRootArea(workItem: any) {
+    const currentWorkItemArea = workItem.fields['System.AreaPath'];
+    const rootArea = tl.getInput('rootArea');
+    if (currentWorkItemArea === rootArea) {
+        console.log(`Updating tags on #${workItem.id} with ${rootArea} area`);
+        await updateWorkItem(workItem);
+    }
+}
+
+async function updateWorkItemFromChildArea(workItem: any, chieldWorkItemArea: string) {
+    const rootArea = tl.getInput('rootArea');
+    const areaForFiltering = `${rootArea}\\${chieldWorkItemArea}`;
+    const currentWorkItemArea = workItem.fields['System.AreaPath'];
+    if (currentWorkItemArea === areaForFiltering) {
+        console.log(`Updating tags on #${workItem.id} with ${areaForFiltering} area`);
+        await updateWorkItem(workItem);
+    }
+}
+
+async function updateWorkItem(workItem: any) {
     const tagFromInput = tl.getInput('tagToAdd');
     const uri = workItem.url + `?api-version=${apiVersion}`;
     const currentTags = workItem.fields['System.Tags'];
@@ -82,9 +97,9 @@ function createGetRequestOptions(uri: string): any {
         uri: uri,
         headers: {
             authorization: `Bearer ${accessToken}`,
-            'content-type': 'application/json'
+            'content-type': 'application/json',
         },
-        json: true
+        json: true,
     };
     return options;
 }
@@ -94,20 +109,18 @@ function getPatchRequestOptions(uri: string, newTags: string): any {
         uri: uri,
         headers: {
             authorization: `Bearer ${accessToken}`,
-            'content-type': 'application/json-patch+json'
+            'content-type': 'application/json-patch+json',
         },
         body: [
             {
                 op: 'add',
                 path: '/fields/System.Tags',
-                value: newTags
-            }
+                value: newTags,
+            },
         ],
-        json: true
+        json: true,
     };
     return options;
 }
 
 run();
-
-
